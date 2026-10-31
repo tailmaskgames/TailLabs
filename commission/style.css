@@ -198,8 +198,9 @@ main { display: block; }
 .work-card[data-theme="tl004"] { --c-bg: #fde9da; --c-media: #f4d6cf; --c-accent: #d0604f; --c-muted: #86605a; }
 .work-card[data-theme="dir"] { --c-bg: #151a1c; --c-ink: #ece5d3; --c-muted: #a4a296; --c-accent: #e8913a; --c-media: #20282a; }
 .work-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; font-weight: 700; }
-.work-code { font-family: var(--font-num); font-weight: 800; font-size: 13px; padding: 3px 10px; border-radius: 99px; background: var(--c-ink); color: var(--c-bg); }
-.work-status { display: inline-flex; align-items: center; gap: 8px; color: var(--c-muted); text-align: right; }
+.work-plan { font-weight: 800; font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--c-ink); color: var(--c-bg); }
+.work-plan::before { content: "✦ "; color: var(--c-accent); }
+.work-status { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; color: var(--c-muted); text-align: right; }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #3fbf6a; box-shadow: 0 0 0 3px #3fbf6a33; animation: pulse 2s ease-in-out infinite; }
 .work-media { position: relative; aspect-ratio: 1 / 1; border-radius: 20px; overflow: hidden; background: var(--c-media); isolation: isolate; }
 .phone { position: absolute; left: 50%; top: 6%; width: 41%; aspect-ratio: 9 / 19.5; translate: -50% 0; rotate: -4deg; border: 6px solid #141012; border-radius: 26px; overflow: hidden; background: #141012; box-shadow: 0 18px 30px #0000003d; transition: rotate .6s var(--ease), translate .6s var(--ease); }
@@ -221,6 +222,9 @@ main { display: block; }
 .work-card:hover .pixel-portrait { translate: -50% -56%; }
 .pixel-portrait img { width: 100%; image-rendering: pixelated; }
 .pixel-portrait figcaption { position: absolute; left: -3px; bottom: -26px; padding: 1px 8px; background: var(--c-accent); color: #121619; font-weight: 900; font-size: 12px; }
+.work-body h3 > span { display: block; }
+.work-no { display: block; margin-bottom: 4px; font-family: var(--font-num); font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--c-muted); }
+.work-where { font-family: var(--font-num); font-size: 13px; font-weight: 700; color: var(--c-muted); }
 .work-body h3 { font-family: var(--font-display); font-weight: 900; font-size: clamp(26px, 7vw, 36px); letter-spacing: -.03em; line-height: 1.15; }
 .work-body > p { margin-top: 8px; color: var(--c-muted); font-size: 15px; line-height: 1.7; }
 .tags { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
@@ -229,7 +233,6 @@ main { display: block; }
 .button-on-theme { background: var(--c-ink); color: var(--c-bg); border-color: var(--c-ink); }
 .button-on-theme:hover { box-shadow: 0 6px 0 var(--c-accent); }
 .work-card .text-link { color: var(--c-accent); }
-.soon-pill { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 99px; border: 1.5px dashed var(--c-accent); color: var(--c-accent); font-weight: 800; font-size: 14px; }
 
 /* ───────── Plans ───────── */
 .plans { background: var(--paper-2); border-top: 2px solid var(--ink); }
@@ -253,6 +256,9 @@ main { display: block; }
 .feature-list li::before { content: "✓"; position: absolute; left: 0; top: .2em; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--rose); color: var(--paper); font-size: 11px; font-weight: 900; }
 .plan-boundary { margin-top: 18px; font-size: 13px; color: var(--muted); }
 .plan-example { margin-top: 6px; }
+.plan-prototype { background: transparent; border-style: dashed; }
+.plan-prototype .plan-symbol i { background: transparent; }
+.plan-credit { margin-top: 10px; display: flex; gap: 8px; padding: 10px 14px; border-radius: 14px; background: var(--butter); border: 1.5px solid var(--ink); font-size: 13px; font-weight: 800; }
 .plan-advanced { background: var(--ink); color: var(--paper); box-shadow: 8px 8px 0 var(--rose); }
 .plan-advanced .plan-description, .plan-advanced .plan-boundary, .plan-advanced .price .from { color: #d9c9c5; }
 .plan-advanced .plan-symbol i, .plan-advanced .feature-list li::before { background: var(--butter); color: var(--ink); }
