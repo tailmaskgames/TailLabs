@@ -353,6 +353,42 @@ main { display: block; }
 .art-addon-copy p:last-child { margin-top: 4px; color: var(--muted); font-size: 14px; }
 .art-addon .button { grid-column: 1 / -1; }
 
+/* ───────── Artists ───────── */
+.artists { padding-top: 0; }
+.artist-card { display: grid; overflow: hidden; border: 2px solid var(--ink); border-radius: 36px; background: var(--card); box-shadow: 8px 8px 0 var(--ink); }
+.artist-board { position: relative; min-height: 300px; border-bottom: 2px solid var(--ink); background-color: #f4ece4; background-image: radial-gradient(circle, #c27a8530 1.3px, transparent 1.6px); background-size: 18px 18px; container-type: inline-size; overflow: hidden; }
+.board-label { position: absolute; left: 16px; top: 14px; font-family: var(--font-num); font-weight: 800; font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+.swatches { position: absolute; right: 14px; top: 12px; display: flex; }
+.swatches i { width: 22px; height: 22px; margin-left: -6px; border-radius: 50%; border: 2px solid var(--ink); }
+.swatches i:nth-child(1) { background: var(--rose); }
+.swatches i:nth-child(2) { background: var(--butter); }
+.swatches i:nth-child(3) { background: #9cc7a4; }
+.swatches i:nth-child(4) { background: #8fb3dc; }
+.swatches i:nth-child(5) { background: var(--paper); }
+.sticker { position: absolute; width: 30cqw; max-width: 170px; transition: transform .4s var(--ease); }
+.sticker img { width: 100%; filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(4px 6px 0 #221a1c22); }
+.sticker::before { content: ""; position: absolute; z-index: 1; left: 50%; top: 2%; width: 34%; height: 13%; translate: -50% 0; rotate: -6deg; background: #f2c14ecc; border-left: 2px dashed #fff8; border-right: 2px dashed #fff8; }
+.k1 { left: 6%; top: 18%; rotate: -10deg; }
+.k2 { left: 36%; top: 8%; rotate: 6deg; }
+.k3 { right: 5%; top: 30%; rotate: 12deg; }
+.k4 { left: 18%; bottom: 4%; rotate: 8deg; }
+.k5 { left: 50%; bottom: 0; width: 26cqw; rotate: -12deg; }
+.k2::before, .k5::before { background: #c27a85b3; }
+.sticker:hover { transform: translateY(-8px) rotate(-4deg) scale(1.06); }
+.artist-board:hover .sticker:not(:hover) { transform: scale(.97); }
+.scribble { position: absolute; left: 30%; top: 46%; width: 40%; color: var(--rose-deep); opacity: .55; rotate: -8deg; }
+.artist-copy { padding: 30px 24px 32px; }
+.brush { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--rose); color: var(--paper); font-size: 13px; }
+.artist-copy .button { margin-top: 26px; }
+.artist-credit { margin-top: 18px; font-size: 12px; color: var(--muted); }
+@media (min-width: 640px) {
+  .artist-card { grid-template-columns: 1fr 1.05fr; }
+  .artist-board { min-height: 420px; border-bottom: 0; border-right: 2px solid var(--ink); }
+  .artist-copy { align-self: center; padding: 40px 36px; }
+  .sticker { width: 40cqw; }
+  .k5 { width: 34cqw; }
+}
+
 /* ───────── Contact ───────── */
 .contact { padding-block: 24px; }
 .contact-panel { position: relative; overflow: hidden; padding: 56px 24px; border-radius: 36px; border: 2px solid var(--ink); background: var(--rose); color: var(--paper); }
