@@ -196,7 +196,7 @@ main { display: block; }
 .work-card[data-theme="tl001"] { --c-bg: #fbe7e6; --c-media: #efc9cb; --c-accent: #b55e6c; --c-muted: #7d5d62; }
 .work-card[data-theme="tl003"] { --c-bg: #1c2622; --c-ink: #e7f0dd; --c-muted: #a9b9a3; --c-accent: #b7e07a; --c-media: #0e1512; }
 .work-card[data-theme="tl004"] { --c-bg: #fde9da; --c-media: #f4d6cf; --c-accent: #d0604f; --c-muted: #86605a; }
-.work-card[data-theme="dir"] { --c-bg: #1d2722; --c-ink: #ece5d3; --c-muted: #a9b3a4; --c-accent: #c8613a; --c-media: #ffffff; }
+.work-card[data-theme="dir"] { --c-bg: #1d2722; --c-ink: #ece5d3; --c-muted: #a9b3a4; --c-accent: #c8613a; --c-media: #1d2722; }
 .work-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; font-weight: 700; }
 .work-plan { font-weight: 800; font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--c-ink); color: var(--c-bg); }
 .work-plan::before { content: "✦ "; color: var(--c-accent); }
@@ -216,12 +216,9 @@ main { display: block; }
 .mo1 { left: 6%; bottom: 10%; rotate: -14deg; }
 .mo2 { right: 7%; top: 14%; width: 17%; rotate: 16deg; }
 .media-stamp { position: absolute; right: 10px; bottom: 10px; z-index: 2; padding: 4px 10px; border: 1.5px solid var(--c-accent); color: var(--c-accent); border-radius: 6px; font-family: var(--font-num); font-weight: 800; font-size: 11px; letter-spacing: .08em; background: color-mix(in srgb, var(--c-bg) 70%, transparent); }
-.work-card[data-theme="dir"] .media-stamp { background: #1d2722; border-color: #1d2722; color: #ece5d3; }
-.media-pixel { background-image: radial-gradient(circle, #3b4d3f24 1.4px, transparent 1.7px); background-size: 14px 14px; }
-.pixel-portrait { position: absolute; z-index: 2; left: 50%; top: 47%; width: 48%; translate: -50% -50%; background: #fff; border: 4px solid #1d2722; box-shadow: 7px 7px 0 #87372f; transition: translate .5s var(--ease); }
-.work-card:hover .pixel-portrait { translate: -50% -56%; }
-.pixel-portrait img { width: 100%; image-rendering: pixelated; }
-.pixel-portrait figcaption { position: absolute; left: -4px; bottom: -30px; padding: 2px 10px; background: #87372f; color: #fff; font-weight: 900; font-size: 13px; }
+.work-media.media-cover { aspect-ratio: 630 / 500; background: #1d2722; }
+.cover-img { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; transition: transform .6s var(--ease); }
+.work-card:hover .cover-img { transform: scale(1.04); }
 .work-body h3 > span { display: block; }
 .work-qr { display: none; }
 @media (min-width: 640px) {
