@@ -59,6 +59,7 @@
     ["你畫的角色，我讓它動起來、變成能玩的遊戲。", "You draw the characters; I'll bring them to life in a game people can play.", "あなたが描いたキャラクターを、動いて遊べるゲームにします。"],
     ["談更多，找我。", "Let's talk.", "詳しくはご連絡を。"],
     ["圖中是爆打四十塊的夥伴們，美術：牛牛、阿樹。", "Pictured: the friends from Smash the Forty, art by Niuniu and Ashu.", "図は「四十塊をぶっ飛ばせ」の仲間たち（イラスト：牛牛、阿樹）。"],
+    ["用手機掃描", "Scan with your phone", "スマホで読み取る"],
     ["跳至主要內容", "Skip to content", "本文へスキップ"],
     ["浣熊拉芙", "Rafu", "浣熊ラフ"],
     ["遊戲委託", "Game commissions", "ゲーム制作"],
