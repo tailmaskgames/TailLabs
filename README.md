@@ -143,7 +143,7 @@ GitHub Pages 部署工作流程已設定；合入 `main` 並完成 Pages 設定�
 
 GitHub 帳號使用 `tailmaskgames`，本地 `origin` 應指向 `https://github.com/tailmaskgames/TailLabs.git`。帳號改名後，確認 GitHub Pages 的 Actions 部署成功；若啟用共用排行榜，也需重新部署 Worker，讓 `wrangler.toml` 中的正式來源白名單生效，詳見 [共用排行榜設定](docs/shared-leaderboard.md)。
 
-委託頁的 HTML、樣式、互動位於 `commission/`，直接編輯後執行 `npm run build` 即可。內容依[遊戲委託文件](https://docs.google.com/document/d/1NwfgXDX-ODlL-yqW9u1Fa0S5FQNrrzrTELzfNiWD2zs/edit?tab=t.0) 於 2026-10-18 的版本整理；文件後續修改需同步更新網頁。頁面以靜態檔案運作，主視覺使用 CSS 橘色表情球，包含方案範例切換、可展開條款、取消費用試算，以及可複製的委託訊息；資料只在訪客的瀏覽器中處理。
+委託頁的 HTML、樣式、互動位於 `commission/`，直接編輯後執行 `npm run build` 即可。內容依[遊戲委託文件](https://docs.google.com/document/d/1NwfgXDX-ODlL-yqW9u1Fa0S5FQNrrzrTELzfNiWD2zs/edit?tab=t.0) 於 2026-10-18 的版本整理；文件後續修改需同步更新網頁。頁面以靜態檔案運作，2026-10-31 改版為直式單欄（手機為全螢幕選單，寬螢幕為左側固定導覽列），新增「TailLabs 作品」區塊列出 TL001、TL003、TL004 與《獸潮清理有限公司》；保留方案範例切換、可展開條款、取消費用試算、可複製的委託訊息與 EN／ZH／JA 切換，資料只在訪客的瀏覽器中處理。作品截圖位於 `commission/assets/works/`，新增文字要同步在 `commission/i18n.js` 補上英文與日文。
 
 若要啟用共用排行榜，請在 GitHub repository variables 設定 `VITE_LEADERBOARD_API_URL`。`base: './'` 讓遊戲資源使用相對網址；後續新增 public 圖片時，請透過 `import.meta.env.BASE_URL` 組合路徑，避免寫死 `/assets/...`。
 

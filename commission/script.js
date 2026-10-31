@@ -1,31 +1,45 @@
 const { t } = window.commissionI18n;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const desktopRail = window.matchMedia('(min-width: 1100px)');
+
+/* Navigation: full-screen menu on phones, fixed rail on wide screens. */
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
-function closeMenu() {
-  navigation.classList.remove('open');
-  menuButton.setAttribute('aria-expanded', 'false');
-  menuButton.setAttribute('aria-label', t('開啟導覽選單'));
-}
-menuButton.addEventListener('click', () => {
-  const open = menuButton.getAttribute('aria-expanded') !== 'true';
+function setMenu(open) {
   navigation.classList.toggle('open', open);
   menuButton.setAttribute('aria-expanded', String(open));
   menuButton.setAttribute('aria-label', t(open ? '關閉導覽選單' : '開啟導覽選單'));
-});
+  document.body.classList.toggle('dialog-open', open && !desktopRail.matches);
+}
+menuButton.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
 navigation.addEventListener('click', (event) => {
-  if (event.target.closest('a')) closeMenu();
+  if (event.target.closest('a')) setMenu(false);
 });
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
-    closeMenu();
+    setMenu(false);
     menuButton.focus();
   }
 });
-document.addEventListener('click', (event) => {
-  if (!event.target.closest('.nav-wrap')) closeMenu();
-});
-window.matchMedia('(min-width: 961px)').addEventListener('change', closeMenu);
+desktopRail.addEventListener('change', () => setMenu(false));
 
+/* Scroll spy for the rail. */
+const navLinks = [...navigation.querySelectorAll('.nav-list a')];
+const spyTargets = navLinks.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+if ('IntersectionObserver' in window) {
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach((link) => {
+        if (link.getAttribute('href') === `#${entry.target.id}`) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  spyTargets.forEach((section) => spy.observe(section));
+}
+
+/* Hero: remix the stacked spheres. */
 const remixButton = document.querySelector('#remix');
 const heroOrbField = document.querySelector('#hero-orb-field');
 const heroOrbImages = [...heroOrbField.querySelectorAll('.orb-art')];
@@ -44,12 +58,11 @@ remixButton.addEventListener('click', async () => {
   artworkChanging = true;
   const nextIndex = (remixCount + 1) % artworkOptions.length;
   try {
-    const nextImages = heroOrbImages.map((_, index) => {
+    await Promise.all(heroOrbImages.map((_, index) => {
       const image = new Image();
       image.src = artworkOptions[(index + nextIndex) % artworkOptions.length];
       return image.decode();
-    });
-    await Promise.all(nextImages);
+    }));
     heroOrbField.classList.add('is-changing');
     window.setTimeout(() => {
       heroOrbImages.forEach((image, index) => {
@@ -58,25 +71,28 @@ remixButton.addEventListener('click', async () => {
       remixCount = nextIndex;
       requestAnimationFrame(() => heroOrbField.classList.remove('is-changing'));
       artworkChanging = false;
-    }, 180);
+    }, 200);
   } catch {
     artworkChanging = false;
   }
 });
 
-const revealSections = document.querySelectorAll('.plans-section, .showcase, .consultation, .addons, .contact, .details-section');
-if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.documentElement.classList.add('scroll-reveal-ready');
+/* Reveal on scroll (once). */
+if ('IntersectionObserver' in window && !reduceMotion) {
+  document.documentElement.classList.add('reveal-ready');
   const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => entry.target.classList.toggle('is-visible', entry.isIntersecting));
-  }, { rootMargin: '-10% 0px -10% 0px', threshold: 0 });
-  revealSections.forEach((section) => {
-    section.classList.add('scroll-reveal');
-    revealObserver.observe(section);
-  });
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      revealObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
 }
 
+/* Showcase tabs. */
 const tabs = [...document.querySelectorAll('[role="tab"]')];
+const segmented = document.querySelector('.segmented');
 const art = document.querySelector('.showcase-art');
 const exampleContact = document.querySelector('#example-contact');
 const examples = {
@@ -86,16 +102,21 @@ const examples = {
 };
 function selectExample(mode, moveFocus = false) {
   if (!examples[mode]) return;
-  tabs.forEach((tab) => {
+  const changed = art.dataset.mode !== mode;
+  tabs.forEach((tab, index) => {
     const selected = tab.dataset.mode === mode;
     tab.setAttribute('aria-selected', String(selected));
     tab.tabIndex = selected ? 0 : -1;
     document.getElementById(tab.getAttribute('aria-controls')).hidden = !selected;
+    if (selected) segmented.style.setProperty('--idx', index);
     if (selected && moveFocus) tab.focus();
   });
   art.dataset.mode = mode;
   document.querySelector('#example-status').textContent = t(examples[mode].label);
-  art.querySelectorAll('.example-chip').forEach((chip, index) => { chip.textContent = t(examples[mode].chips[index]); });
+  art.querySelectorAll('.example-chip').forEach((chip, index) => {
+    chip.textContent = t(examples[mode].chips[index]);
+    if (changed) { chip.style.animation = 'none'; void chip.offsetWidth; chip.style.animation = ''; }
+  });
   exampleContact.dataset.plan = examples[mode].plan;
 }
 tabs.forEach((tab, index) => {
@@ -116,8 +137,10 @@ document.querySelectorAll('[data-example]').forEach((link) => {
   link.addEventListener('click', () => selectExample(link.dataset.example));
 });
 
+/* Cancellation calculator. */
 const quoteInput = document.querySelector('#quote-input');
 const progressInput = document.querySelector('#progress-input');
+const feeMeter = document.querySelector('.fee-meter');
 function updateCancellation() {
   const amountFormatter = new Intl.NumberFormat(window.commissionI18n.locale, { maximumFractionDigits: 2 });
   const progress = Number(progressInput.value);
@@ -127,11 +150,13 @@ function updateCancellation() {
   document.querySelector('#progress-output').textContent = `${progress}%`;
   document.querySelector('#fee-rate').textContent = t('（報價的 {rate}%）', { rate: Number(rate.toFixed(1)) });
   document.querySelector('#fee-amount').textContent = validQuote ? `NT$${amountFormatter.format(quote * rate / 100)}` : t('請輸入有效報價');
+  feeMeter.style.setProperty('--rate', rate);
 }
 quoteInput.addEventListener('input', updateCancellation);
 progressInput.addEventListener('input', updateCancellation);
 updateCancellation();
 
+/* Commission brief dialog. */
 const briefDialog = document.querySelector('#brief-dialog');
 const briefPlan = document.querySelector('#brief-plan');
 const briefMessage = document.querySelector('#brief-message');
@@ -178,10 +203,9 @@ briefPlan.addEventListener('change', () => { setBriefPlan(briefPlan.value); copy
 briefMessage.addEventListener('input', () => { briefUserEdited = true; copyStatus.textContent = ''; });
 document.querySelector('.dialog-close').addEventListener('click', () => briefDialog.close());
 briefDialog.addEventListener('click', (event) => {
-  if (event.target === briefDialog) {
-    const rect = briefDialog.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) briefDialog.close();
-  }
+  if (event.target !== briefDialog) return;
+  const rect = briefDialog.getBoundingClientRect();
+  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) briefDialog.close();
 });
 briefDialog.addEventListener('close', () => document.body.classList.remove('dialog-open'));
 document.querySelector('#copy-brief').addEventListener('click', async () => {
